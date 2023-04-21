@@ -34,12 +34,12 @@ class LogIn : AppCompatActivity() {
             val sEmail = etEmail.text.toString().trim()
             val sPassword = etPassword.text.toString().trim()
 
-            auth.createUserWithEmailAndPassword(sEmail, sPassword)
+            auth.signInWithEmailAndPassword(sEmail, sPassword)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
-                        updateUI(user)
+                        updateUI()
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(baseContext, "Authentication failed.",
@@ -63,9 +63,18 @@ class LogIn : AppCompatActivity() {
 
     }
 
-    private fun updateUI(user: FirebaseUser?) {
+    private fun updateUI() {
         val intent = Intent(this, DashboardMainActivity::class.java)
         startActivity(intent)
 
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if(currentUser != null){
+            updateUI()
+        }
     }
 }
