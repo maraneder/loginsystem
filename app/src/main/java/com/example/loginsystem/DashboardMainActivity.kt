@@ -9,6 +9,7 @@ import com.google.firebase.ktx.Firebase
 
 class DashboardMainActivity : AppCompatActivity() {
     private lateinit var btnLogOut : Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard_main)

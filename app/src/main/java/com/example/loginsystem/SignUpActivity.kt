@@ -9,14 +9,24 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var tvEmail:TextView
     private lateinit var tvPassword:TextView
     private lateinit var btnRegister: Button
+    private lateinit var tvUsername: TextView
 
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var sEmail: String
+    private lateinit var sPassword: String
+    private lateinit var sUsername: String
+
+    private lateinit var database: DatabaseReference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,19 +35,23 @@ class SignUpActivity : AppCompatActivity() {
 
         // Initialize Firebase Auth
         auth = Firebase.auth
+        database = Firebase.database.reference
+
         tvEmail = findViewById(R.id.EmailAdress)
         tvPassword = findViewById(R.id.Password)
         btnRegister = findViewById(R.id.Register)
+        tvUsername = findViewById(R.id.Username)
 
         btnRegister.setOnClickListener{
-            val sEmail = tvEmail.text.toString().trim()
-            val sPassword = tvPassword.text.toString().trim()
+            sEmail = tvEmail.text.toString().trim()
+            sPassword = tvPassword.text.toString().trim()
 
 
             auth.createUserWithEmailAndPassword(sEmail, sPassword)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
+                        saveData()
                         val user = auth.currentUser
                         updateUI(user)
                     } else {
@@ -49,6 +63,19 @@ class SignUpActivity : AppCompatActivity() {
                 }
         }
     }
+
+    private fun saveData() {
+        sEmail = tvEmail.text.toString().trim()
+        sUsername = tvUsername.text.toString().trim()
+
+
+        val user = UserModel(sUsername, sEmail)
+
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        database.child("User").child(userId).setValue(user)
+    }
+
 
     private fun updateUI(user: FirebaseUser?) {
         val intent = Intent(this, DashboardMainActivity::class.java)
