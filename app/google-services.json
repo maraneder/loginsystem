@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "317511200159",
-    "project_id": "logging-in-5b22e",
-    "storage_bucket": "logging-in-5b22e.appspot.com"
+    "project_number": "77477436205",
+    "project_id": "inlog-system",
+    "storage_bucket": "inlog-system.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:317511200159:android:54736cfaae6e109a21a1aa",
+        "mobilesdk_app_id": "1:77477436205:android:fddf1634ca9db53031d1a4",
         "android_client_info": {
           "package_name": "com.example.loginsystem"
         }
       },
       "oauth_client": [
         {
-          "client_id": "317511200159-2m0svla05lntuupd6vt4dcmhpvcd9kse.apps.googleusercontent.com",
+          "client_id": "77477436205-ttivbcbtq6iqn9jdsj9lr3sfr8pj5l8p.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCfY1d358EetvRHBY3tjkszY2wURkX8RrM"
+          "current_key": "AIzaSyB_c-v_rs7qLXEDTCMNqa_R_G-rASy9MOw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "317511200159-2m0svla05lntuupd6vt4dcmhpvcd9kse.apps.googleusercontent.com",
+              "client_id": "77477436205-ttivbcbtq6iqn9jdsj9lr3sfr8pj5l8p.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

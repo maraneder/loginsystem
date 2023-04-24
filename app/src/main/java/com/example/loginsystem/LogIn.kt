@@ -29,7 +29,7 @@ class LogIn : AppCompatActivity() {
         auth = Firebase.auth
 
         btnLogin = findViewById(R.id.btnlogin)
-        etEmail = findViewById(R.id.login_email)
+        etEmail = findViewById(R.id.log_in)
         etPassword = findViewById(R.id.login_password)
 
         btnLogin.setOnClickListener {

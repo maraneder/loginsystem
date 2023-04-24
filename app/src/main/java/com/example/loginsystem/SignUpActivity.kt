@@ -12,6 +12,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.security.Timestamp
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -84,7 +85,7 @@ class SignUpActivity : AppCompatActivity() {
 
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        database.child("User").child(userId).setValue(user)
+        database.child("Users").child(userId).setValue(user)
     }
 
 
