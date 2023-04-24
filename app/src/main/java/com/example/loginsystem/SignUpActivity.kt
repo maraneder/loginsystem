@@ -1,17 +1,20 @@
 package com.example.loginsystem
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var tvEmail:TextView
@@ -42,10 +45,10 @@ class SignUpActivity : AppCompatActivity() {
         btnRegister = findViewById(R.id.Register)
         tvUsername = findViewById(R.id.Username)
 
+
         btnRegister.setOnClickListener{
             sEmail = tvEmail.text.toString().trim()
             sPassword = tvPassword.text.toString().trim()
-
 
             auth.createUserWithEmailAndPassword(sEmail, sPassword)
                 .addOnCompleteListener(this) { task ->
@@ -90,4 +93,6 @@ class SignUpActivity : AppCompatActivity() {
         startActivity(intent)
 
     }
+
+
 }

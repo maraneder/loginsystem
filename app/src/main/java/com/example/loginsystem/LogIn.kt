@@ -17,6 +17,9 @@ class LogIn : AppCompatActivity() {
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
     private lateinit var auth: FirebaseAuth
+    private var counter = 0
+    private var blockedEmail = ""
+    private var blocked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,28 +37,39 @@ class LogIn : AppCompatActivity() {
             val sEmail = etEmail.text.toString().trim()
             val sPassword = etPassword.text.toString().trim()
 
-            auth.signInWithEmailAndPassword(sEmail, sPassword)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        val verification = auth.currentUser?.isEmailVerified
-                        if (verification == true){
+            if(blocked && sEmail.equals(blockedEmail)){
+                Toast.makeText(this, "Your account is blocked", Toast.LENGTH_SHORT).show()
+            }else {
+                auth.signInWithEmailAndPassword(sEmail, sPassword)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            val verification = auth.currentUser?.isEmailVerified
+                            if (verification == true){
 
-                            val user = auth.currentUser
-                            updateUI()
-                            
-                        }else {
-                            Toast.makeText(this, "Please verify your e-mail", Toast.LENGTH_SHORT).show()
-                        }
+                                val user = auth.currentUser
+                                updateUI()
 
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(baseContext, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
+                            }else {
+                                Toast.makeText(this, "Please verify your e-mail", Toast.LENGTH_SHORT).show()
+                            }
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(baseContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show()
+
+                            counter += 1
+                            if(counter > 2) {
+                                blockedEmail = sEmail
+                                blocked = true
+                                Toast.makeText(this, "Three wrong attemps. Your account is blocked", Toast.LENGTH_SHORT).show()
+                            }
+
 //                        updateUI(null)
+                        }
                     }
-                }
-
+            }
 
 
         }
