@@ -51,9 +51,17 @@ class SignUpActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        saveData()
+                        auth.currentUser?.sendEmailVerification()
+                            ?.addOnSuccessListener {
+                                Toast.makeText(this, "Please verify your e-mail", Toast.LENGTH_SHORT).show()
+                                saveData()
+                            }
+                            ?.addOnFailureListener{
+                                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                            }
+
                         val user = auth.currentUser
-                        updateUI(user)
+//                        updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(baseContext, "Authentication failed.",

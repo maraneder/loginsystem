@@ -38,8 +38,16 @@ class LogIn : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        updateUI()
+                        val verification = auth.currentUser?.isEmailVerified
+                        if (verification == true){
+
+                            val user = auth.currentUser
+                            updateUI()
+                            
+                        }else {
+                            Toast.makeText(this, "Please verify your e-mail", Toast.LENGTH_SHORT).show()
+                        }
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(baseContext, "Authentication failed.",
