@@ -15,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 import java.security.Timestamp
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -51,28 +52,44 @@ class SignUpActivity : AppCompatActivity() {
             sEmail = tvEmail.text.toString().trim()
             sPassword = tvPassword.text.toString().trim()
 
-            auth.createUserWithEmailAndPassword(sEmail, sPassword)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        auth.currentUser?.sendEmailVerification()
-                            ?.addOnSuccessListener {
-                                Toast.makeText(this, "Please verify your e-mail", Toast.LENGTH_SHORT).show()
-                                saveData()
-                            }
-                            ?.addOnFailureListener{
-                                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
-                            }
+            // check if password is at least 8 characters, contains a number and a capital letter and a special character
+            if (sPassword.length >= 8 && sPassword.contains(Regex("[0-9]"))
+                && sPassword.contains(Regex("[A-Z]"))
+                && sPassword.contains(Regex("[!@#$%^&*()~_+:;\"'{}\\|<>,.?/]+"))
+                && sPassword.contains(Regex("[^A-Za-z0-9]")))
+            {
+                auth.createUserWithEmailAndPassword(sEmail, sPassword)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            auth.currentUser?.sendEmailVerification()
+                                ?.addOnSuccessListener {
+                                    Toast.makeText(
+                                        this,
+                                        "Please verify your e-mail",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    saveData()
+                                }
+                                ?.addOnFailureListener {
+                                    Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                                }
 
-                        val user = auth.currentUser
+                            val user = auth.currentUser
 //                        updateUI(user)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(baseContext, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
-                        updateUI(null)
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(
+                                baseContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            updateUI(null)
+                        }
                     }
-                }
+            } else {
+                Toast.makeText(this, "Password needs to be 8 characters long, contain a letter, " +
+                        "number and special character", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -81,7 +98,7 @@ class SignUpActivity : AppCompatActivity() {
         sUsername = tvUsername.text.toString().trim()
 
 
-        val user = UserModel(sUsername, sEmail)
+        val user = UserModel(sUsername, sEmail, LocalDateTime.now())
 
         val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
